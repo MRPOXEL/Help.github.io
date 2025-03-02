@@ -54,30 +54,36 @@
     <div id="blue-screen" class="blue-screen">ERROR: CORRUPTION</div>
 
     <script>
-        // Show the scary message after 15 seconds
-        setTimeout(() => {
-            document.getElementById('message').style.display = 'block';
-        }, 15000);
-
-        // Start the countdown timer
-        let timeLeft = 20;
+        const messageElement = document.getElementById('message');
         const timerElement = document.getElementById('timer');
         const blueScreenElement = document.getElementById('blue-screen');
 
-        setTimeout(() => {
-            timerElement.style.display = 'block';
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    document.body.style.backgroundColor = 'blue';
-                    document.getElementById('message').style.display = 'none';
-                    timerElement.style.display = 'none';
-                    blueScreenElement.style.display = 'block';
-                }
-            }, 1000);
-        }, 15000);
+        if (localStorage.getItem("corruptScreen") === "true") {
+            document.body.style.backgroundColor = 'blue';
+            blueScreenElement.style.display = 'block';
+        } else {
+            setTimeout(() => {
+                messageElement.style.display = 'block';
+            }, 15000);
+
+            let timeLeft = 20;
+            setTimeout(() => {
+                timerElement.style.display = 'block';
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        document.body.style.backgroundColor = 'blue';
+                        messageElement.style.display = 'none';
+                        timerElement.style.display = 'none';
+                        blueScreenElement.style.display = 'block';
+
+                        localStorage.setItem("corruptScreen", "true");
+                    }
+                }, 1000);
+            }, 15000);
+        }
     </script>
 </body>
 </html>
